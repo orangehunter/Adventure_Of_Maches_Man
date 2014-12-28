@@ -20,7 +20,7 @@ import android.view.SurfaceView;
 public class MainView extends SurfaceView
 implements SurfaceHolder.Callback{
 	//===============宣告======================
-
+    Bitmap back;
 	//========================================
 	SparseArray<PointF> mActivePointers=new SparseArray<PointF>();
 	SparseArray<Integer> btn_pointer=new SparseArray<Integer>();
@@ -36,17 +36,12 @@ implements SurfaceHolder.Callback{
 
 
 	}
-	public Bitmap LoadBitmap(int r){
-		return BitmapFactory.decodeResource(getResources(), r);
-	}
-	@Override
+    @Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		paint = new Paint();//建立畫筆
 		paint.setAntiAlias(true);//開啟抗鋸齒
 		//=============圖片載入==================
-
-
-
+        back=Graphic.LoadBitmap(activity.getResources(),R.drawable.title_tw,1280,720,true);
 		//=====================================
 		Constant.Flag=true;
 		//=============螢幕刷新=================================================
@@ -58,7 +53,7 @@ implements SurfaceHolder.Callback{
 					try {
 						Thread.sleep(20);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 					SurfaceHolder myholder=MainView.this.getHolder();
@@ -82,7 +77,7 @@ implements SurfaceHolder.Callback{
 			canvas.drawColor(Color.WHITE);//界面設定為白色
 			paint.setAntiAlias(true);	//開啟抗鋸齒
 			//================================畫面繪製========================================
-
+            Graphic.drawPic(canvas,back,1280/2,720/2,0,255,paint);
 			//===============================================================================
 		}
 	}
@@ -133,7 +128,8 @@ implements SurfaceHolder.Callback{
 	}
 
 	public void surfaceDestroyed(SurfaceHolder arg0) {//銷毀時被呼叫
-		Constant.Flag=false;
+        back.recycle();
+        Constant.Flag=false;
 	}
 
 

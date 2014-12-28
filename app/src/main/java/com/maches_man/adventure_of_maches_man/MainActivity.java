@@ -18,10 +18,12 @@ import android.widget.Toast;
 public class MainActivity extends Activity{
 	int nowActivity=0;
 	MainView mainview;
-	Aview aview;
+	gameView gameview;
 
 	Intent intent;
 	Intent deintent;
+
+    int video_select;
 
 	public void changeView(int what)//ち传Serface癟祇癳
 	{
@@ -38,7 +40,7 @@ public class MainActivity extends Activity{
 				goToMainView();
 				break;
 			case 1:
-				goToAview();
+				goToGameview();
 				break;
 		
 			}
@@ -54,14 +56,14 @@ public class MainActivity extends Activity{
 		mainview.requestFocus();//眔礘翴
 		mainview.setFocusableInTouchMode(true);//砞牟北
 	}
-	private void goToAview() {
-		if(aview==null)
+	private void goToGameview() {
+		if(gameview ==null)
 		{
-			aview=new Aview(this);
+			gameview =new gameView(this);
 		}
-		setContentView(aview);
-		aview.requestFocus();//眔礘翴
-		aview.setFocusableInTouchMode(true);//砞牟北
+		setContentView(gameview);
+		gameview.requestFocus();//眔礘翴
+		gameview.setFocusableInTouchMode(true);//砞牟北
 	}
 
 	
@@ -72,7 +74,7 @@ public class MainActivity extends Activity{
 	} 
 	Handler toastHandler = new Handler(){//矪瞶SurfaceView肚癳Toast癟
 		public void handleMessage(Message msg) {
-			switch(msg.what)//
+			switch(msg.what)
 			{
 			case 0:
 				createToast("");

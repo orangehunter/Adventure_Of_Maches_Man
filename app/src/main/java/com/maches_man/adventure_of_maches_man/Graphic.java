@@ -1,18 +1,104 @@
 package com.maches_man.adventure_of_maches_man;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 
 public class Graphic {
 
-	static Bitmap bitSize(Bitmap bf,int f,int g){//???ç¸®æ?
+    static Bitmap LoadBitmap(Resources rs,int r,boolean withAlpha){
+        InputStream inputStream = rs.openRawResource(r);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        if(withAlpha) {
+            options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+        }else {
+            options.inPreferredConfig=Bitmap.Config.RGB_565;
+        }
+        inputStream = rs.openRawResource(r);
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream,null, options);
+        try {
+            inputStream.reset();
+        } catch (IOException e) {
+            Log.e("graphic", ""+e);
+        }
+        if(bitmap==null){
+            Log.e("graphic", "bitmail null");
+        }
+        return bitmap;
+    }
+
+	static Bitmap LoadBitmap(Resources rs,int r,int x,int y,int scale,boolean withAlpha){
+		try{
+		 InputStream inputStream = rs.openRawResource(r);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds=false;
+            if(withAlpha) {
+                options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+            }else {
+                options.inPreferredConfig=Bitmap.Config.RGB_565;
+            }
+            options.inPurgeable = true;
+            options.inInputShareable = true;
+            options.inSampleSize = scale;
+		 Bitmap s=BitmapFactory.decodeStream(inputStream, null, options);
+		    return Bitmap.createScaledBitmap(s, (int)Coordinate.CoordinateX(x), (int)Coordinate.CoordinateY(y), true);
+		}catch(OutOfMemoryError e){
+			return null;
+		}
+		//return BitmapFactory.decodeResource(getResources(), r);
+	}
+	static Bitmap LoadBitmap(Resources rs,int r,int x,int y,boolean withAlpha){
+		InputStream inputStream = rs.openRawResource(r);
+		BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        if(withAlpha) {
+            options.inPreferredConfig = Bitmap.Config.ARGB_4444;
+        }else {
+            options.inPreferredConfig=Bitmap.Config.RGB_565;
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream,null,options);
+        
+        int heightRatio = (int)Math.ceil(options.outHeight/y);//(float)Coordinate.CoordinateY(y));
+        int widthRatio = (int)Math.ceil(options.outWidth/x);//(float)Coordinate.CoordinateX(x));
+        
+        if (heightRatio > 1 || widthRatio > 1)
+        {
+         if (heightRatio > widthRatio)
+         {
+          options.inSampleSize = heightRatio;
+         } else {
+          options.inSampleSize = widthRatio;
+         }
+        }
+        
+        options.inJustDecodeBounds = false;
+        inputStream = rs.openRawResource(r);
+        bitmap = BitmapFactory.decodeStream(inputStream,null, options);
+        bitmap=bitSize(bitmap,x,y);
+        try {
+			inputStream.reset();
+		} catch (IOException e) {
+			Log.e("graphic", ""+e);
+		}
+        if(bitmap==null){
+        	Log.e("graphic", "bitmail null");
+        }
+     return bitmap;
+	}
+
+	static Bitmap bitSize(Bitmap bf,int f,int g){//¤j¤p­×§ï
 		int bw=0;
 		int bh=0;
 		float scaleWidth=0;
 		float scaleHeight=0;
-		// ????³è?ç¼©æ???atrix???
 		Matrix matrix = new Matrix();
 		while(scaleWidth<=0&&scaleHeight<=0){
 			bw=bf.getWidth();
@@ -21,12 +107,22 @@ public class Graphic {
 			scaleHeight = Coordinate.CoordinateY(g)/ bh;
 		}
 		matrix.postScale(scaleWidth, scaleHeight);
-		Bitmap bit=Bitmap.createBitmap(bf, 0,0,bw,bh, matrix, true);//ç¸®æ????
+		Bitmap bit=Bitmap.createBitmap(bf, 0,0,bw,bh, matrix, true);
 		matrix.reset();
-		//bf.recycle();//?·æ????
-		//bf=null;
 
 		return bit;
+	}
+    static Bitmap MirrorFlipHorizontal(Bitmap bf){//Ãè¹³¤ô¥­Â½Âà
+        Matrix matrix = new Matrix();
+        matrix.postScale(-1,1);
+        Bitmap bit=Bitmap.createBitmap(bf, 0,0,bf.getWidth(),bf.getHeight(), matrix, true);
+        matrix.reset();
+
+        return bit;
+    }
+	static Bitmap cutArea(Bitmap bt, int start_x, int start_y, int width, int height){//°Ï°ì¤Á³Î
+		Bitmap temp=Bitmap.createBitmap(bt, start_x,start_y, width, height);
+		return temp;
 	}
 
 	static void drawPic(Canvas canvas,Bitmap bit,int mid_x,int mid_y,float rot,int alpha,Paint paint){
@@ -46,9 +142,9 @@ public class Graphic {
 	}
 
 	static void drawLine(Canvas canvas,int color,int start_x,int start_y,int end_x,int end_y,int with,Paint paint){
-		paint.setColor(color);																	//è¨­å?é¡??
-		paint.setStrokeWidth(with);    //è¨­å?ç·?¯¬
-		canvas.drawLine(Coordinate.CoordinateX(start_x), Coordinate.CoordinateY(start_y), Coordinate.CoordinateX(end_x),Coordinate.CoordinateY( end_y), paint);      //ç¹ªè£½?´ç?
+		paint.setColor(color);
+		paint.setStrokeWidth(with);
+		canvas.drawLine(Coordinate.CoordinateX(start_x), Coordinate.CoordinateY(start_y), Coordinate.CoordinateX(end_x),Coordinate.CoordinateY( end_y), paint);
 		paint.reset();
 	}
 }
