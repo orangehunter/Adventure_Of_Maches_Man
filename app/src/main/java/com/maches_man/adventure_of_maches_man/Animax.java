@@ -51,7 +51,7 @@ public class Animax {
 		return (int)animax_count_flag;
 	}
 
-	public void drawEffect(Bitmap pic[],double speed,Canvas canvas,Paint paint,int flip){//繪圖(無設定長度)
+	public void drawEffect(Bitmap pic[],double speed,Canvas canvas,Paint paint,int x,int y,int flip){//繪圖(無設定長度)
 		if(animax_flag){
 			if(!pause_flag){
 			animax_count_flag+=speed;
@@ -71,10 +71,6 @@ public class Animax {
                 }
 			}
 		}
-	}
-	
-	public Boolean getFlag(){
-		return animax_flag;
 	}
 
 }
