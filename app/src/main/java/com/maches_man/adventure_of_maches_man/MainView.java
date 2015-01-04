@@ -116,6 +116,7 @@ implements SurfaceHolder.Callback{
 		case MotionEvent.ACTION_CANCEL: 
 			mActivePointers.remove(pointerId);
 			btn_pointer.remove(pointerId);
+            activity.changeView(1);
 			break;
 		}
 

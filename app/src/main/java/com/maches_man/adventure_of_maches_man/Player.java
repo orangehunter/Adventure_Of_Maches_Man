@@ -15,7 +15,6 @@ public class Player {
     final int player_squat=3;
     final int player_rush=4;
     boolean draw_flag;
-    Animax animax;
     int x,y;
     int face_flag;
     final int face_left=0;
@@ -58,12 +57,16 @@ public class Player {
     float skill_mp_expend;
 
     float superSkill_mp_expend;
+    boolean exsword_flag;
 
     Bitmap fist,gun,sword,other, msword, exsword_p, exsword_a;
     Bitmap rush;
-    Bitmap[] stop,jump,squat,fist_squat_atk, sword_atk, sword_squat_atk,msword_atk;
-    Bitmap[] exsword_pre,exsword_atk,damaged,die;
-    Bitmap[][] walk,fist_atk;
+    Bitmap[] stop,jump,squat, fist_squat_atk_pic, sword_atk_pic, sword_squat_atk_pic, msword_atk_pic,walk_back;
+    Bitmap[] exsword_pre_pic, exsword_atk_pic, damaged_pic, die_pic;
+    Bitmap[][] walk_pic, fist_atk_pic;
+
+    Animax fist_squat_atk,sword_atk,sword_squat_atk,msword_atk,exsword_pre,exsword_atk,damaged,die;
+    Animax[]fist_atk,walk;
 
     public Player(MainActivity activity){
         fist=   Graphic.LoadBitmap(activity.getResources(),R.drawable.player_fist       ,false);
@@ -81,59 +84,79 @@ public class Player {
 
         rush=Graphic.bitSize(Graphic.cutArea(other,0,100,100,100),size,size);
 
-        fist_atk =new Bitmap[3][3];
+
+        fist_atk_pic =new Bitmap[3][3];
         for(int i=0;i<3;i++){
-            fist_atk[0][i]=Graphic.bitSize(Graphic.cutArea(fist,100*i,100,100,100),size,size);
+            fist_atk_pic[0][i]=Graphic.bitSize(Graphic.cutArea(fist,100*i,100,100,100),size,size);
         }
         for(int i=0;i<3;i++){
-            fist_atk[1][i]=Graphic.bitSize(Graphic.cutArea(fist,300+100*i,100,100,100),size,size);
+            fist_atk_pic[1][i]=Graphic.bitSize(Graphic.cutArea(fist,300+100*i,100,100,100),size,size);
         }
         for(int i=0;i<3;i++){
-            fist_atk[2][i]=Graphic.bitSize(Graphic.cutArea(fist,100*i,200,100,100),size,size);
+            fist_atk_pic[2][i]=Graphic.bitSize(Graphic.cutArea(fist,100*i,200,100,100),size,size);
+        }
+        fist_atk=new Animax[3];
+        for (int i=0;i<3;i++){
+            fist_atk[i] = new Animax(fist_atk_pic[i]);
         }
 
-        fist_squat_atk =new Bitmap[3];
-        for(int i=0;i<3;i++){
-            fist_squat_atk[i]=Graphic.bitSize(Graphic.cutArea(fist,100*i+100,300,100,100),size,size);
-        }
 
-        sword_atk =new Bitmap[4];
+        fist_squat_atk_pic =new Bitmap[3];
+        for(int i=0;i<3;i++){
+            fist_squat_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(fist,100*i+100,300,100,100),size,size);
+        }
+        fist_squat_atk=new Animax(fist_squat_atk_pic);
+
+
+        sword_atk_pic =new Bitmap[4];
         for(int i=0;i<4;i++){
-            sword_atk[i]=Graphic.bitSize(Graphic.cutArea(sword,120*i,200,120,100),(int)(size*1.2),size);
+            sword_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(sword,120*i,200,120,100),(int)(size*1.2),size);
         }
+        sword_atk=new Animax(sword_atk_pic);
 
-        sword_squat_atk =new Bitmap[4];
+        sword_squat_atk_pic =new Bitmap[4];
         for(int i=0;i<4;i++){
-            sword_squat_atk[i]=Graphic.bitSize(Graphic.cutArea(sword,120*i,300,120,100),(int)(size*1.2),size);
+            sword_squat_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(sword,120*i,300,120,100),(int)(size*1.2),size);
         }
+        sword_squat_atk=new Animax(sword_squat_atk_pic);
 
-        msword_atk=new Bitmap[4];
+
+        msword_atk_pic =new Bitmap[4];
         for(int i=0;i<4;i++){
-            msword_atk[i]=Graphic.bitSize(Graphic.cutArea(msword,120*i,0,120,100),(int)(size*1.2),size);
+            msword_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(msword,120*i,0,120,100),(int)(size*1.2),size);
         }
+        msword_atk=new Animax(msword_atk_pic);
         msword.recycle();
 
-        exsword_pre=new Bitmap[12];
+
+        exsword_pre_pic =new Bitmap[12];
         for(int i=0;i<12;i++){
-            exsword_pre[i]=Graphic.bitSize(Graphic.cutArea(exsword_p,150*i,0,150,100),(int)(size*1.5),size);
+            exsword_pre_pic[i]=Graphic.bitSize(Graphic.cutArea(exsword_p,150*i,0,150,100),(int)(size*1.5),size);
         }
+        exsword_pre=new Animax(exsword_pre_pic);
         exsword_p.recycle();
 
-        exsword_atk=new Bitmap[5];
+
+        exsword_atk_pic =new Bitmap[5];
         for(int i=0;i<5;i++){
-            exsword_atk[i]=Graphic.bitSize(Graphic.cutArea(exsword_a,800*i,0,800,100),(int)(size*8),size);
+            exsword_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(exsword_a,800*i,0,800,100),(int)(size*8),size);
         }
+        exsword_atk=new Animax(exsword_atk_pic);
         exsword_a.recycle();
 
-        damaged=new Bitmap[2];
-        for(int i=0;i<2;i++){
-            damaged[i]=Graphic.bitSize(Graphic.cutArea(other,100*i,0,100,100),size,size);
-        }
 
-        die=new Bitmap[3];
-        for(int i=0;i<3;i++){
-            die[i]=Graphic.bitSize(Graphic.cutArea(other,200+100*i,0,100,100),size,size);
+        damaged_pic =new Bitmap[2];
+        for(int i=0;i<2;i++){
+            damaged_pic[i]=Graphic.bitSize(Graphic.cutArea(other,100*i,0,100,100),size,size);
         }
+        damaged=new Animax(damaged_pic);
+
+
+        die_pic =new Bitmap[3];
+        for(int i=0;i<3;i++){
+            die_pic[i]=Graphic.bitSize(Graphic.cutArea(other,200+100*i,0,100,100),size,size);
+        }
+        die=new Animax(die_pic);
         other.recycle();
 
         stop =new Bitmap[3];
@@ -151,18 +174,27 @@ public class Player {
         squat[1]=Graphic.bitSize(Graphic.cutArea(gun, 100, 100, 100, 100),size,size);
         squat[2]=Graphic.bitSize(Graphic.cutArea(sword, 100, 100, 100, 100),size,size);
 
-        walk=new Bitmap[3][3];
-        walk[0][0]= Graphic.bitSize(Graphic.cutArea(fist, 0  , 0, 100, 100), size, size);
-        walk[0][1]= Graphic.bitSize(Graphic.cutArea(fist, 100, 0, 100, 100), size, size);
-        walk[0][2]= Graphic.bitSize(Graphic.cutArea(fist, 200, 0, 100, 100), size, size);
+        walk_pic =new Bitmap[3][3];
+        walk_pic[0][0]= Graphic.bitSize(Graphic.cutArea(fist, 0  , 0, 100, 100), size, size);
+        walk_pic[0][1]= Graphic.bitSize(Graphic.cutArea(fist, 100, 0, 100, 100), size, size);
+        walk_pic[0][2]= Graphic.bitSize(Graphic.cutArea(fist, 200, 0, 100, 100), size, size);
+        walk_back=new Bitmap[3];
+        walk_back[0]=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.walk_back_fist,false),size,size);
 
-        walk[1][0]= Graphic.bitSize(Graphic.cutArea(gun, 100, 0, 100, 100),size,size);
-        walk[1][1]= Graphic.bitSize(Graphic.cutArea(gun, 200, 0, 100, 100),size,size);
-        walk[1][2]= Graphic.bitSize(Graphic.cutArea(gun, 300, 0, 100, 100),size,size);
+        walk_pic[1][0]= Graphic.bitSize(Graphic.cutArea(gun, 100, 0, 100, 100),size,size);
+        walk_pic[1][1]= Graphic.bitSize(Graphic.cutArea(gun, 200, 0, 100, 100),size,size);
+        walk_pic[1][2]= Graphic.bitSize(Graphic.cutArea(gun, 300, 0, 100, 100),size,size);
+        walk_back[1]=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.walk_back_gun,false),size,size);
 
-        walk[2][0]= Graphic.bitSize(Graphic.cutArea(sword, 100, 0, 100, 100),size,size);
-        walk[2][1]= Graphic.bitSize(Graphic.cutArea(sword, 200, 0, 100, 100),size,size);
-        walk[2][2]= Graphic.bitSize(Graphic.cutArea(sword, 300, 0, 100, 100),size,size);
+        walk_pic[2][0]= Graphic.bitSize(Graphic.cutArea(sword, 100, 0, 100, 100),size,size);
+        walk_pic[2][1]= Graphic.bitSize(Graphic.cutArea(sword, 200, 0, 100, 100),size,size);
+        walk_pic[2][2]= Graphic.bitSize(Graphic.cutArea(sword, 300, 0, 100, 100),size,size);
+        walk_back[2]=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.walk_back_sword,false),size,size);
+
+        walk=new Animax[3];
+        for (int i=0;i<3;i++){
+            walk[i] = new Animax(walk_pic[i]);
+        }
 
         fist.recycle();
         gun.recycle();
@@ -172,7 +204,7 @@ public class Player {
         move_flag=player_stop;
 
         x=1280/2;
-        y=720/2;
+        y=720/3*2;
 
         lv=1;
 
@@ -200,8 +232,21 @@ public class Player {
         attack_normal_coolTime =5;
         skill_mp_expend=20;
         superSkill_mp_expend=mp_max;
+        exsword_flag=false;
 
         weapon_flag=0;
+    }
+    public  void setStop(){
+        if (move_flag!=player_stop)
+            move_flag=player_stop;
+    }
+    public void setWalk(int face_flag){
+        if (this.face_flag!=face_flag)
+            this.face_flag=face_flag;
+        if (move_flag!=player_walk)
+            move_flag=player_walk;
+        if (walk[weapon_flag].getFlag()==false)
+            walk[weapon_flag].start();
     }
     public void drawPlayer(Canvas canvas,Paint paint,double animax_speed){
         if (life_flag) {
@@ -214,13 +259,13 @@ public class Player {
                         case attack_normal:
                             switch (weapon_flag){
                                 case weapon_Fist:
-                                    animax.drawEffect(fist_atk[fist_flag],animax_speed,canvas,paint,x,y,face_flag);
+                                    fist_atk[fist_flag].drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                                     break;
                                 case weapon_Gun:
                                     draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
                                     break;
                                 case weapon_Sword:
-                                    animax.drawEffect(sword_atk,animax_speed,canvas,paint,x,y,face_flag);
+                                    sword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                                     break;
                             }
                             break;
@@ -230,19 +275,23 @@ public class Player {
                                     draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
                                     break;
                                 case weapon_Sword:
-                                    animax.drawEffect(msword_atk,animax_speed,canvas,paint,x,y,face_flag);
+                                    msword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                                     break;
                             }
                             break;
                         case attack_super_skill:
-                            animax.drawEffect(exsword_atk,animax_speed,canvas,paint,x,y,face_flag);
+                            if (exsword_flag){
+                                exsword_pre.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+                            }else{
+                                exsword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+                            }
                             break;
                     }
                     break;
                 case player_walk:
-                    animax.loop_flag=true;
-                    animax.drawEffect(walk[weapon_flag], animax_speed, canvas, paint,x,y, face_flag);
-                    animax.loop_flag=false;
+                    walk[weapon_flag].loop_flag=true;
+                    draw(canvas,walk_back[weapon_flag],x,y,0,255,paint);
+                    walk[weapon_flag].drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                     break;
                 case player_jump:
                     draw(canvas, jump[weapon_flag], x, y, 0, 255, paint);
@@ -255,7 +304,7 @@ public class Player {
                     break;
             }
         }else{
-            animax.drawEffect(die,animax_speed,canvas,paint,x,y,face_flag);
+           die.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
             //TODO 死亡動畫完畢後
         }
     }
@@ -270,21 +319,21 @@ public class Player {
         for_recycle(stop);
         for_recycle(jump);
         for_recycle(squat);
-        for_recycle(fist_atk[0]);
-        for_recycle(fist_atk[1]);
-        for_recycle(fist_atk[2]);
-        for_recycle(fist_squat_atk);
-        for_recycle(sword_atk);
-        for_recycle(sword_squat_atk);
-        for_recycle(msword_atk);
-        for_recycle(exsword_pre);
-        for_recycle(exsword_atk);
-        for_recycle(damaged);
-        for_recycle(die);
-
-        for(int i=0;i<walk.length;i++){
-            for(int l=0;l<walk[i].length;l++){
-                walk[i][l].recycle();
+        for_recycle(fist_atk_pic[0]);
+        for_recycle(fist_atk_pic[1]);
+        for_recycle(fist_atk_pic[2]);
+        for_recycle(fist_squat_atk_pic);
+        for_recycle(sword_atk_pic);
+        for_recycle(sword_squat_atk_pic);
+        for_recycle(msword_atk_pic);
+        for_recycle(exsword_pre_pic);
+        for_recycle(exsword_atk_pic);
+        for_recycle(damaged_pic);
+        for_recycle(die_pic);
+        for_recycle(walk_back);
+        for(int i=0;i< walk_pic.length;i++){
+            for(int l=0;l< walk_pic[i].length;l++){
+                walk_pic[i][l].recycle();
             }
         }
     }
