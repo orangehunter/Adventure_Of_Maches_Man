@@ -19,10 +19,11 @@ public class gameView extends SurfaceView
     //===============宣告======================
     Player player;
     int player_gravity=0;
+    Bitmap player_info;
+    enemy_pic en_pic;
     Bitmap back;
     int back_x,back_y;
     boolean jump_flag=false;
-    int jump_counter=-1;
     boolean squat_flag=false;
     int squat_counter=-1;
     //========================================
@@ -44,6 +45,8 @@ public class gameView extends SurfaceView
         paint.setAntiAlias(true);//開啟抗鋸齒
         //=============圖片載入==================
         player=new Player(activity);
+        player_info=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.player_info,false),1280,160);
+        en_pic=new enemy_pic(activity);
         back=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.bg_tmp3,false),2560,800);
         back_x=0;
         back_y=0;
@@ -82,6 +85,7 @@ public class gameView extends SurfaceView
             canvas.drawColor(Color.WHITE);//界面設定為白色
             paint.setAntiAlias(true);	//開啟抗鋸齒
             Graphic.drawPic(canvas,back,(int)(back_x+1280/2),(int)(back_y+720/2),0,255,paint);
+            Graphic.drawPic(canvas,player_info,1280/2,80,0,255,paint);
             player.drawPlayer(canvas,paint,0.25);
 
 
@@ -196,6 +200,8 @@ public class gameView extends SurfaceView
     public void surfaceDestroyed(SurfaceHolder arg0) {//銷毀時被呼叫
         player.recycle();
         back.recycle();
+        player_info.recycle();
+        en_pic.recycle();
         Constant.Flag=false;
     }
 

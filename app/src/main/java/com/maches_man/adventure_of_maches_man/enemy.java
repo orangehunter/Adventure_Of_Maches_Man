@@ -8,6 +8,7 @@ import android.graphics.Paint;
  * Created by michael on 2014/12/28.
  */
 public class enemy {
+    enemy_pic pic;
     int move_flag;
     final int move_stop =0;
     final int move_walk =1;
@@ -37,81 +38,10 @@ public class enemy {
     final int weapon_Sword  =2;
 
 
-    Bitmap fist,gun,sword,other;
-    Bitmap[] stop, sword_atk_pic, walk_back,fist_atk_pic;
-    Bitmap[]  damaged_pic, die_pic;
-    Bitmap[][] walk_pic;
-
-    Animax sword_atk,damaged,die,fist_atk;
-    Animax[]walk;
-
-    public enemy(MainActivity activity){
-        fist=   Graphic.LoadBitmap(activity.getResources(),R.drawable.player_fist       ,false);
-        gun=    Graphic.LoadBitmap(activity.getResources(),R.drawable.player_gun        ,false);
-        sword=  Graphic.LoadBitmap(activity.getResources(),R.drawable.player_sword      ,false);
-        other=  Graphic.LoadBitmap(activity.getResources(),R.drawable.player_other      ,false);
 
 
-        int size=100;
-
-        fist_atk_pic =new Bitmap[3];
-        for(int i=0;i<3;i++){
-            fist_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(fist,100*i,100,100,100),size,size);
-        }
-        fist_atk = new Animax(fist_atk_pic);
-
-
-        sword_atk_pic =new Bitmap[4];
-        for(int i=0;i<4;i++){
-            sword_atk_pic[i]=Graphic.bitSize(Graphic.cutArea(sword,120*i,200,120,100),(int)(size*1.2),size);
-        }
-        sword_atk=new Animax(sword_atk_pic);
-
-
-        damaged_pic =new Bitmap[2];
-        for(int i=0;i<2;i++){
-            damaged_pic[i]=Graphic.bitSize(Graphic.cutArea(other,100*i,0,100,100),size,size);
-        }
-        damaged=new Animax(damaged_pic);
-
-
-        die_pic =new Bitmap[3];
-        for(int i=0;i<3;i++){
-            die_pic[i]=Graphic.bitSize(Graphic.cutArea(other,200+100*i,0,100,100),size,size);
-        }
-        die=new Animax(die_pic);
-        other.recycle();
-
-        stop =new Bitmap[3];
-        stop[0]= Graphic.bitSize(Graphic.cutArea(fist , 0, 0, 100, 100), size, size);
-        stop[1]= Graphic.bitSize(Graphic.cutArea(gun  , 0, 0, 100, 100), size, size);
-        stop[2]= Graphic.bitSize(Graphic.cutArea(sword, 0, 0, 100, 100), size, size);
-
-        walk_pic =new Bitmap[3][3];
-        walk_pic[0][0]= Graphic.bitSize(Graphic.cutArea(fist, 0  , 0, 100, 100), size, size);
-        walk_pic[0][1]= Graphic.bitSize(Graphic.cutArea(fist, 100, 0, 100, 100), size, size);
-        walk_pic[0][2]= Graphic.bitSize(Graphic.cutArea(fist, 200, 0, 100, 100), size, size);
-        walk_back=new Bitmap[3];
-        walk_back[0]=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.walk_back_fist,false),size,size);
-
-        walk_pic[1][0]= Graphic.bitSize(Graphic.cutArea(gun, 100, 0, 100, 100),size,size);
-        walk_pic[1][1]= Graphic.bitSize(Graphic.cutArea(gun, 200, 0, 100, 100),size,size);
-        walk_pic[1][2]= Graphic.bitSize(Graphic.cutArea(gun, 300, 0, 100, 100),size,size);
-        walk_back[1]=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.walk_back_gun,false),size,size);
-
-        walk_pic[2][0]= Graphic.bitSize(Graphic.cutArea(sword, 100, 0, 100, 100),size,size);
-        walk_pic[2][1]= Graphic.bitSize(Graphic.cutArea(sword, 200, 0, 100, 100),size,size);
-        walk_pic[2][2]= Graphic.bitSize(Graphic.cutArea(sword, 300, 0, 100, 100),size,size);
-        walk_back[2]=Graphic.bitSize(Graphic.LoadBitmap(activity.getResources(),R.drawable.walk_back_sword,false),size,size);
-
-        walk=new Animax[3];
-        for (int i=0;i<3;i++){
-            walk[i] = new Animax(walk_pic[i]);
-        }
-
-        fist.recycle();
-        gun.recycle();
-        sword.recycle();
+    public enemy(MainActivity activity,enemy_pic pic){
+        this.pic=pic;
 
         draw_flag=true;
         move_flag= move_stop;
@@ -137,8 +67,8 @@ public class enemy {
     public void setWalk(){
         if (move_flag!= move_walk)
             move_flag= move_walk;
-        if (walk[weapon_flag].getFlag()==false)
-            walk[weapon_flag].start();
+        if (pic.walk[weapon_flag].getFlag()==false)
+            pic.walk[weapon_flag].start();
     }
 
     public void setFace_flag(int face_flag){
@@ -151,18 +81,18 @@ public class enemy {
                 case move_stop:
                     switch (attack_flag) {
                         case attack_non:
-                            draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
+                            draw(canvas, pic.stop[weapon_flag], x, y, 0, 255, paint);
                             break;
                         case attack_normal:
                             switch (weapon_flag){
                                 case weapon_Fist:
-                                    fist_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+                                    pic.fist_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                                     break;
                                 case weapon_Gun:
-                                    draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
+                                    draw(canvas, pic.stop[weapon_flag], x, y, 0, 255, paint);
                                     break;
                                 case weapon_Sword:
-                                    sword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+                                    pic.sword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                                     break;
                             }
                             break;
@@ -170,14 +100,14 @@ public class enemy {
                     }
                     break;
                 case move_walk:
-                    walk[weapon_flag].loop_flag=true;
-                    draw(canvas,walk_back[weapon_flag],x,y,0,255,paint);
-                    walk[weapon_flag].drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+                    pic.walk[weapon_flag].loop_flag=true;
+                    draw(canvas,pic.walk_back[weapon_flag],x,y,0,255,paint);
+                    pic.walk[weapon_flag].drawEffect(animax_speed,canvas,paint,x,y,face_flag);
                     break;
 
             }
         }else{
-            die.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+            pic.die.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
             //TODO 死亡動畫完畢後
         }
     }
@@ -188,22 +118,5 @@ public class enemy {
             Graphic.drawPic(canvas, bit, x, y, rot, alpha, paint);
         }
     }
-    public void recycle(){
-        for_recycle(stop);
-        for_recycle(fist_atk_pic);
-        for_recycle(sword_atk_pic);
-        for_recycle(damaged_pic);
-        for_recycle(die_pic);
-        for_recycle(walk_back);
-        for(int i=0;i< walk_pic.length;i++){
-            for(int l=0;l< walk_pic[i].length;l++){
-                walk_pic[i][l].recycle();
-            }
-        }
-    }
-    public void for_recycle(Bitmap[] tmp){
-        for(int i=0;i<tmp.length;i++){
-            tmp[i].recycle();
-        }
-    }
+
 }
