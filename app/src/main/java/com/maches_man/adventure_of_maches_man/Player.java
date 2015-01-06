@@ -220,7 +220,7 @@ public class Player {
         life_flag=true;
         life=3;
 
-        jump_power=15;
+        jump_power=18;
 
         squat_time=20;
 
@@ -240,13 +240,23 @@ public class Player {
         if (move_flag!=player_stop)
             move_flag=player_stop;
     }
-    public void setWalk(int face_flag){
-        if (this.face_flag!=face_flag)
-            this.face_flag=face_flag;
+    public void setWalk(){
         if (move_flag!=player_walk)
             move_flag=player_walk;
         if (walk[weapon_flag].getFlag()==false)
             walk[weapon_flag].start();
+    }
+    public void setJump(){
+        if (move_flag!=player_jump)
+            move_flag=player_jump;
+    }
+    public void setSquat(){
+        if (move_flag!=player_squat)
+            move_flag=player_squat;
+    }
+    public void setFace_flag(int face_flag){
+        if (this.face_flag!=face_flag)
+            this.face_flag=face_flag;
     }
     public void drawPlayer(Canvas canvas,Paint paint,double animax_speed){
         if (life_flag) {

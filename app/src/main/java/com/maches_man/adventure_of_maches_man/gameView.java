@@ -18,13 +18,16 @@ public class gameView extends SurfaceView
         implements SurfaceHolder.Callback{
     //===============宣告======================
     Player player;
+    int player_gravity=0;
     Bitmap back;
     int back_x,back_y;
+    boolean jump_flag=false;
+    int jump_counter=-1;
+    boolean squat_flag=false;
+    int squat_counter=-1;
     //========================================
-    SparseArray<PointF> pointers =new SparseArray<PointF>();
-    SparseArray<Integer> btn_pointer=new SparseArray<Integer>();
-    final int active_left=1;
-    final int active_right=2;
+    SparseArray<point> pointers = new SparseArray<point>();
+    SparseArray<Integer> walk =new SparseArray<Integer>();
     int pointerCount=0;
     Paint paint;			//畫筆的參考
     MainActivity activity;
@@ -80,21 +83,48 @@ public class gameView extends SurfaceView
             paint.setAntiAlias(true);	//開啟抗鋸齒
             Graphic.drawPic(canvas,back,(int)(back_x+1280/2),(int)(back_y+720/2),0,255,paint);
             player.drawPlayer(canvas,paint,0.25);
-            if(pointers.size()==0){
-                player.setStop();
-            }
-            for(int i=0;i<pointers.size();i++) {
-                try {
-                    if (pointers.get(i).x > Coordinate.CoordinateX(1280 / 2)) {
-                        player.setWalk(player.face_right);
+
+
+            if (jump_flag){
+                player.setJump();
+                player.y-=player_gravity;
+                player_gravity--;
+                if (walk.get(0)!=null) {
+                    player.setFace_flag(walk.get(0));
+                    if (walk.get(0) == player.face_right) {
                         back_x -= 5;
                     }
-                    if (pointers.get(i).x < Coordinate.CoordinateX(1280 / 2)) {
-                        player.setWalk(player.face_left);
+                    if (walk.get(0) == player.face_left) {
                         back_x += 5;
                     }
-                }catch (NullPointerException e){
-                    //Log.v("gameview",""+e);
+                }
+                if (player.y>=720/3*2){
+                    jump_flag=false;
+                    player_gravity=0;
+                    player.y=720/3*2;
+                }
+            }else if (squat_flag) {
+                player.setSquat();
+                if(squat_counter==-1) {
+                squat_counter=player.squat_time;
+                }
+                squat_counter--;
+                if (squat_counter==0) {
+                squat_flag=false;
+                    squat_counter=-1;
+                }
+            }else{
+                if (walk.get(0) == null) {
+                    player.setStop();
+                } else {
+                    player.setWalk();
+                    player.setFace_flag(walk.get(0));
+                    if (walk.get(0) == player.face_right) {
+                        back_x -= 5;
+                    }
+                    if (walk.get(0) == player.face_left) {
+                        back_x += 5;
+                    }
                 }
             }
         }
@@ -113,18 +143,26 @@ public class gameView extends SurfaceView
         {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN://按下
-                PointF f = new PointF();
-                f.x = event.getX(pointerIndex);
-                f.y = event.getY(pointerIndex);
-                pointers.put(pointerId, f);
-
+                point down = new point();
+                down.x = event.getX(pointerIndex);
+                down.y = event.getY(pointerIndex);
+                down.down_x=down.x;
+                down.down_y=down.y;
+                if(down.x>Coordinate.CoordinateX(1280/2)){
+                    walk.put(pointerId,player.face_right);
+                }
+                if(down.x<Coordinate.CoordinateX(1280/2)){
+                    walk.put(pointerId,player.face_left);
+                }
+                pointers.put(pointerId, down);
                 break;
             case MotionEvent.ACTION_MOVE:  // a pointer was moved
-                for (int size = event.getPointerCount(), i = 0; i < size; i++) {
-                    PointF point = pointers.get(event.getPointerId(i));
-                    if (point != null) {
-                        point.x = event.getX(i);
-                        point.y = event.getY(i);
+                int size = event.getPointerCount();
+                for (int j = 0; j < size; j++) {
+                    point move = pointers.get(event.getPointerId(j));
+                    if (move != null) {
+                        move.x = event.getX(j);
+                        move.y = event.getY(j);
                     }
                 }
                 break;
@@ -132,8 +170,18 @@ public class gameView extends SurfaceView
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:
+                PointF up = new PointF();
+                up.x = event.getX(pointerIndex);
+                up.y = event.getY(pointerIndex);
+                if (pointers.get(pointerId).down_y-up.y>Coordinate.CoordinateY(100)&&jump_flag==false){
+                    player_gravity=player.jump_power;
+                    jump_flag=true;
+                }
+                if (up.y-pointers.get(pointerId).down_y>Coordinate.CoordinateY(100)&&squat_flag==false&&jump_flag==false){
+                    squat_flag=true;
+                }
                 pointers.remove(pointerId);
-                btn_pointer.remove(pointerId);
+                walk.remove(pointerId);
                 break;
         }
 
