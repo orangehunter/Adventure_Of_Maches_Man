@@ -5,47 +5,35 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 
-public class Bottom {
+public class Botton {
 	MainActivity activity;
-	float x;//圖片的中央x座標
-	float y;//圖片的中央y座標
+	int x;//圖片的中央x座標
+	int y;//圖片的中央y座標
 	float width;//虛擬按鈕的寬
 	float height;//虛擬按鈕的高
 	Bitmap onBitmap;//按下狀態的圖片
-	Bitmap offBitmap;//未按下狀態的圖片
 	boolean isOn=false;//按下狀態為true
 	int key;
-	public Bottom(MainActivity activity,Bitmap onBitmap,Bitmap offBitmap,int x,int y){
+	public Botton(MainActivity activity, Bitmap onBitmap, int x, int y){
 		this.activity=activity;
 		//this.isOn=activity.backgroundsoundFlag;
 		this.onBitmap=onBitmap;
-		this.offBitmap=offBitmap;
-		this.width=offBitmap.getWidth();
-		this.height=offBitmap.getHeight();
-		this.x=Coordinate.CoordinateX(x)-(this.width/2);
-		this.y=Coordinate.CoordinateY(y)-(this.height/2);
+		this.width=onBitmap.getWidth();
+		this.height=onBitmap.getHeight();
+		this.x=x;
+		this.y=y;
 	}
 
 	public void drawBtm(Canvas canvas,Paint paint){//繪製按鈕
 		if(isOn)
-			canvas.drawBitmap(onBitmap, x, y, paint);
+			Graphic.drawPic(canvas,onBitmap,x,y,0,150,paint);
 		else
-			canvas.drawBitmap(offBitmap, x, y,paint);
+            Graphic.drawPic(canvas,onBitmap,x,y,0,255,paint);
 	}
-	public void drawBtm(Canvas canvas,Paint paint,int alpha){//繪製按鈕
-		paint.setAlpha(alpha);
-		drawBtm(canvas,paint);
-		paint.reset();
-	} 
+
 	public void drawBtm(Canvas canvas,Paint paint,int x,int y){//繪製按鈕
 		move(x,y);
 		drawBtm(canvas,paint);
-	}
-	public void drawBtm(Canvas canvas,Paint paint,int x,int y,int alpha){//繪製按鈕
-		paint.setAlpha(alpha);
-		move(x,y);
-		drawBtm(canvas,paint);
-		paint.reset();
 	}
 	
 	
@@ -60,8 +48,8 @@ public class Bottom {
 		this.isOn=i;
 	}
 	public void move(int x,int y){
-		this.x=Coordinate.CoordinateX(x)-(this.width/2);
-		this.y=Coordinate.CoordinateY(y)-(this.height/2);
+		this.x=x;
+		this.y=y;
 	}
 	public void setKey(int key){
 		this.key=key;
@@ -69,7 +57,9 @@ public class Bottom {
 	public int getKey(){
 		return key;
 	}
-	public Boolean isIn(float pointx,float pointy){//判斷觸控位置
+	public Boolean isIn(double pointx,double pointy){//判斷觸控位置
+        double x=Coordinate.CoordinateX(this.x)-(this.width/2);
+        double y=Coordinate.CoordinateY(this.y)-(this.height/2);
 		if(pointx>=x&&pointx<=x+width&&      	pointy>=y&&pointy<=y+height)
 			return true;
 		return false;

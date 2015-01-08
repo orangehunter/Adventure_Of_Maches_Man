@@ -34,11 +34,13 @@ public class Player {
     boolean life_flag;
     int life;
 
+    int walk_speed;
+
     int jump_power;
 
     int squat_time;
 
-    int rush_power;
+    int rush_time;
     int rush_coolTime;
 
     int attack_normal_coolTime;
@@ -220,16 +222,18 @@ public class Player {
         life_flag=true;
         life=3;
 
+        walk_speed=5;
+
         jump_power=18;
 
         squat_time=20;
 
-        rush_power=15;
-        rush_coolTime=5;
+        rush_time =20;
+        rush_coolTime=15;
 
         attack_flag=attack_non;
         fist_flag=0;
-        attack_normal_coolTime =5;
+        attack_normal_coolTime =10;
         skill_mp_expend=20;
         superSkill_mp_expend=mp_max;
         exsword_flag=false;
@@ -253,6 +257,10 @@ public class Player {
     public void setSquat(){
         if (move_flag!=player_squat)
             move_flag=player_squat;
+    }
+    public void setRush(){
+        if (move_flag!=player_rush)
+            move_flag=player_rush;
     }
     public void setFace_flag(int face_flag){
         if (this.face_flag!=face_flag)
