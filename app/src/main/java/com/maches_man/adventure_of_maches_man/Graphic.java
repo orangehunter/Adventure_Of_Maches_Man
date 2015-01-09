@@ -94,7 +94,7 @@ public class Graphic {
      return bitmap;
 	}
 
-	static Bitmap bitSize(Bitmap bf,int f,int g){//¤j¤p­×§ï
+	static Bitmap bitSize(Bitmap bf,int f,int g){//å¤§å°ä¿®æ”¹
 		int bw=0;
 		int bh=0;
 		float scaleWidth=0;
@@ -112,7 +112,7 @@ public class Graphic {
 
 		return bit;
 	}
-    static Bitmap MirrorFlipHorizontal(Bitmap bf){//Ãè¹³¤ô¥­Â½Âà
+    static Bitmap MirrorFlipHorizontal(Bitmap bf){//é¡åƒæ°´å¹³ç¿»è½‰
         Matrix matrix = new Matrix();
         matrix.postScale(-1,1);
         Bitmap bit=Bitmap.createBitmap(bf, 0,0,bf.getWidth(),bf.getHeight(), matrix, true);
@@ -120,7 +120,7 @@ public class Graphic {
 
         return bit;
     }
-	static Bitmap cutArea(Bitmap bt, int start_x, int start_y, int width, int height){//°Ï°ì¤Á³Î
+	static Bitmap cutArea(Bitmap bt, int start_x, int start_y, int width, int height){//å€åŸŸåˆ‡å‰²
 		Bitmap temp=Bitmap.createBitmap(bt, start_x,start_y, width, height);
 		return temp;
 	}

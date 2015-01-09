@@ -50,7 +50,7 @@ public class tama {
     }
     public void draw_tama(Canvas canvas,Paint paint){
         if (flag) {
-            Graphic.drawPic(canvas, tama[tama_style], x, y, 0, 255, paint);
+            draw(canvas, tama[tama_style], x, y, 0, 255, paint);
             if (tama_style == tama_playerex) {
                 add(exspeed);
             } else {
@@ -71,5 +71,11 @@ public class tama {
             }
         }
     }
-
+    public void draw(Canvas canvas,Bitmap bit,int x,int y,int rot,int alpha,Paint paint){
+        if(tama_way==0) {
+            Graphic.drawPic(canvas, Graphic.MirrorFlipHorizontal(bit), x, y, rot, alpha, paint);
+        }else {
+            Graphic.drawPic(canvas, bit, x, y, rot, alpha, paint);
+        }
+    }
 }

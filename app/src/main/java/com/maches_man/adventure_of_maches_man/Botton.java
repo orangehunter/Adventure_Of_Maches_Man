@@ -7,12 +7,12 @@ import android.graphics.Paint;
 
 public class Botton {
 	MainActivity activity;
-	int x;//¹Ï¤ùªº¤¤¥¡x®y¼Ð
-	int y;//¹Ï¤ùªº¤¤¥¡y®y¼Ð
-	float width;//µêÀÀ«ö¶sªº¼e
-	float height;//µêÀÀ«ö¶sªº°ª
-	Bitmap onBitmap;//«ö¤Uª¬ºAªº¹Ï¤ù
-	boolean isOn=false;//«ö¤Uª¬ºA¬°true
+	int x;//åœ–ç‰‡çš„ä¸­å¤®xåº§æ¨™
+	int y;//åœ–ç‰‡çš„ä¸­å¤®yåº§æ¨™
+	float width;//è™›æ“¬æŒ‰éˆ•çš„å¯¬
+	float height;//è™›æ“¬æŒ‰éˆ•çš„é«˜
+	Bitmap onBitmap;//æŒ‰ä¸‹ç‹€æ…‹çš„åœ–ç‰‡
+	boolean isOn=false;//æŒ‰ä¸‹ç‹€æ…‹ç‚ºtrue
 	int key;
 	public Botton(MainActivity activity, Bitmap onBitmap, int x, int y){
 		this.activity=activity;
@@ -24,20 +24,20 @@ public class Botton {
 		this.y=y;
 	}
 
-	public void drawBtm(Canvas canvas,Paint paint){//Ã¸»s«ö¶s
+	public void drawBtm(Canvas canvas,Paint paint){//ç¹ªè£½æŒ‰éˆ•
 		if(isOn)
 			Graphic.drawPic(canvas,onBitmap,x,y,0,150,paint);
 		else
             Graphic.drawPic(canvas,onBitmap,x,y,0,255,paint);
 	}
 
-	public void drawBtm(Canvas canvas,Paint paint,int x,int y){//Ã¸»s«ö¶s
+	public void drawBtm(Canvas canvas,Paint paint,int x,int y){//ç¹ªè£½æŒ‰éˆ•
 		move(x,y);
 		drawBtm(canvas,paint);
 	}
 	
 	
-	public void setBottom(){//¤Á´««ö¶sª¬ºA
+	public void setBottom(){//åˆ‡æ›æŒ‰éˆ•ç‹€æ…‹
 		this.isOn=!this.isOn;
 	}
 	public boolean getBottom(){
@@ -57,7 +57,7 @@ public class Botton {
 	public int getKey(){
 		return key;
 	}
-	public Boolean isIn(double pointx,double pointy){//§PÂ_Ä²±±¦ì¸m
+	public Boolean isIn(double pointx,double pointy){//åˆ¤æ–·è§¸æŽ§ä½ç½®
         double x=Coordinate.CoordinateX(this.x)-(this.width/2);
         double y=Coordinate.CoordinateY(this.y)-(this.height/2);
 		if(pointx>=x&&pointx<=x+width&&      	pointy>=y&&pointy<=y+height)

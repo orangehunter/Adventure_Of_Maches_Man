@@ -58,10 +58,10 @@ public class Video extends SurfaceView {
 	public boolean onTouchEvent(MotionEvent event){
 		switch(event.getAction())
 		{
-		case MotionEvent.ACTION_DOWN://«ö¤U
+		case MotionEvent.ACTION_DOWN://æŒ‰ä¸‹
 
 			break;
-		case MotionEvent.ACTION_UP://©ï°_
+		case MotionEvent.ACTION_UP://æŠ¬èµ·
 			changeView();
 			break;
 		}

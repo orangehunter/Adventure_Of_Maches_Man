@@ -29,14 +29,14 @@ public class MainActivity extends Activity{
     int Score = 0;
 
 
-	public void changeView(int what)//¤Á´«Serface°T®§µo°e
+	public void changeView(int what)//åˆ‡æ›Serfaceè¨Šæ¯ç™¼é€
 	{
 		Message msg = myHandler.obtainMessage(what); 
 		myHandler.sendMessage(msg);
 		nowActivity=what;
 	} 
 	
-	Handler myHandler = new Handler(){//±µ¦¬¦U­ÓSurfaceView¶Ç°eªº°T®§
+	Handler myHandler = new Handler(){//æ¥æ”¶å„å€‹SurfaceViewå‚³é€çš„è¨Šæ¯
 		public void handleMessage(Message msg) {
 			switch(msg.what)
 			{
@@ -62,8 +62,8 @@ public class MainActivity extends Activity{
 			mainview=new MainView(this);
 		}
 		setContentView(mainview);
-		mainview.requestFocus();//¨ú±oµJÂI
-		mainview.setFocusableInTouchMode(true);//³]¬°¥iÄ²±±
+		mainview.requestFocus();//å–å¾—ç„¦é»
+		mainview.setFocusableInTouchMode(true);//è¨­ç‚ºå¯è§¸æ§
 	}
 	private void goToGameview() {
 		if(gameview ==null)
@@ -71,8 +71,8 @@ public class MainActivity extends Activity{
 			gameview =new gameView(this);
 		}
 		setContentView(gameview);
-		gameview.requestFocus();//¨ú±oµJÂI
-		gameview.setFocusableInTouchMode(true);//³]¬°¥iÄ²±±
+		gameview.requestFocus();//å–å¾—ç„¦é»
+		gameview.setFocusableInTouchMode(true);//è¨­ç‚ºå¯è§¸æ§
 	}
     private void goToTeachview() {
         if(teachview ==null)
@@ -80,8 +80,8 @@ public class MainActivity extends Activity{
             teachview =new TeachView(this);
         }
         setContentView(teachview);
-        teachview.requestFocus();//¨ú±oµJÂI
-        teachview.setFocusableInTouchMode(true);//³]¬°¥iÄ²±±
+        teachview.requestFocus();//å–å¾—ç„¦é»
+        teachview.setFocusableInTouchMode(true);//è¨­ç‚ºå¯è§¸æ§
     }
     private void goToScoreview() {
         if(scoreview ==null)
@@ -89,17 +89,17 @@ public class MainActivity extends Activity{
             scoreview =new ScoreView(this);
         }
         setContentView(scoreview);
-        scoreview.requestFocus();//¨ú±oµJÂI
-        scoreview.setFocusableInTouchMode(true);//³]¬°¥iÄ²±±
+        scoreview.requestFocus();//å–å¾—ç„¦é»
+        scoreview.setFocusableInTouchMode(true);//è¨­ç‚ºå¯è§¸æ§
     }
 
 	
-	public void callToast(int what)//Toast°T®§¶Ç°e
+	public void callToast(int what)//Toastè¨Šæ¯å‚³é€
 	{
 		Message msg = toastHandler.obtainMessage(what); 
 		toastHandler.sendMessage(msg);
 	} 
-	Handler toastHandler = new Handler(){//³B²z¦U­ÓSurfaceView¶Ç°eªºToast°T®§
+	Handler toastHandler = new Handler(){//è™•ç†å„å€‹SurfaceViewå‚³é€çš„Toastè¨Šæ¯
 		public void handleMessage(Message msg) {
 			switch(msg.what)
 			{
@@ -113,7 +113,7 @@ public class MainActivity extends Activity{
 			}
 		}
 	};
-	public void createToast(String msg){//Åã¥ÜToast
+	public void createToast(String msg){//é¡¯ç¤ºToast
 		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
 	}
 
@@ -121,19 +121,19 @@ public class MainActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//´åÀ¸¹Lµ{¤¤¥u®e³\½Õ¾ã¦h´CÅé­µ¶q¡A¦Ó¤£®e³\½Õ¾ã³q¸Ü­µ¶q
+		//æ¸¸æˆ²éç¨‹ä¸­åªå®¹è¨±èª¿æ•´å¤šåª’é«”éŸ³é‡ï¼Œè€Œä¸å®¹è¨±èª¿æ•´é€šè©±éŸ³é‡
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//¥h±¼¼ĞÃD
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);//å»æ‰æ¨™é¡Œ
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);//¥h±¼¼ĞÀY
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//±j¨î¾î«Ì
-		//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//±j¨îª½«Ì
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);//å»æ‰æ¨™é ­
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//å¼·åˆ¶æ©«å±
+		//this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//å¼·åˆ¶ç›´å±
 
-		//¨ú±o¸ÑªR«×
+		//å–å¾—è§£æåº¦
 		DisplayMetrics dm=new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		//µ¹±`¼ÆÃş§O¤¤ªº¿Ã¹õ°ª©M¼eµ¹¤©­È
-		//¿Å«Ì
+		//çµ¦å¸¸æ•¸é¡åˆ¥ä¸­çš„è¢å¹•é«˜å’Œå¯¬çµ¦äºˆå€¼
+		//è¡¡å±
 		if(dm.widthPixels>dm.heightPixels)
 		{
 			Constant.SCREEN_WIDTH=dm.widthPixels;
@@ -143,12 +143,12 @@ public class MainActivity extends Activity{
 			Constant.SCREEN_HIGHT=dm.widthPixels;
 			Constant.SCREEN_WIDTH=dm.heightPixels;
 		}
-		if(Constant.SCREEN_HIGHT>Constant.SCREEN_WIDTH/16*9)//±N¿Ã¹õ©T©w¬°16:9
+		if(Constant.SCREEN_HIGHT>Constant.SCREEN_WIDTH/16*9)//å°‡è¢å¹•å›ºå®šç‚º16:9
 			Constant.SCREEN_HIGHT=Constant.SCREEN_WIDTH/16*9;
 		else
 			Constant.SCREEN_WIDTH=Constant.SCREEN_HIGHT/9*16;
 		
-		//ª½«Ì
+		//ç›´å±
 		/*
 		 if(dm.widthPixels<dm.heightPixels)
 		{
@@ -159,7 +159,7 @@ public class MainActivity extends Activity{
 			Constant.SCREEN_HIGHT=dm.widthPixels;
 			Constant.SCREEN_WIDTH=dm.heightPixels;
 		}
-		if(Constant.SCREEN_WIDTH>Constant.SCREEN_HIGHT/16*9)//±N¿Ã¹õ©T©w¬°16:9
+		if(Constant.SCREEN_WIDTH>Constant.SCREEN_HIGHT/16*9)//å°‡è¢å¹•å›ºå®šç‚º16:9
 			Constant.SCREEN_WIDTH=Constant.SCREEN_HIGHT/16*9;
 		else
 			Constant.SCREEN_HIGHT=Constant.SCREEN_WIDTH/9*16;
@@ -169,28 +169,28 @@ public class MainActivity extends Activity{
 		Constant.GAME_WIDTH_UNIT= ((float)Constant.SCREEN_WIDTH/Constant.DEFULT_WITH);
 		Constant.SCREEN_HEIGHT_UNIT= ((float)Constant.SCREEN_HIGHT/Constant.DEFULT_HIGHT);
 		
-		changeView(0);//¶i¤J"0¬É­±"
+		changeView(0);//é€²å…¥"0ç•Œé¢"
 	}
 	
 	@Override
-	public boolean onKeyDown(int keyCode,KeyEvent e)//«öÁä°»´ú
+	public boolean onKeyDown(int keyCode,KeyEvent e)//æŒ‰éµåµæ¸¬
 	{
-		if(keyCode==4)//ªğ¦^«Ø
+		if(keyCode==4)//è¿”å›å»º
 		{
-			switch(nowActivity)//°»´ú¥Ø«e¤¶­±
+			switch(nowActivity)//åµæ¸¬ç›®å‰ä»‹é¢
 			{
 			case 1:
 				Constant.Flag=false;
-				this.changeView(0);//¦^¨ì0¬É­±
+				this.changeView(0);//å›åˆ°0ç•Œé¢
 				break;
 			case 0:
-				System.exit(0);//Â÷¶}´åÀ¸
+				System.exit(0);//é›¢é–‹æ¸¸æˆ²
 				break;
 
 			}
 			return true;
 		}
-		/*if(keyCode==e.KEYCODE_HOME){//HOMEÁä
+		/*if(keyCode==e.KEYCODE_HOME){//HOMEéµ
 			 System.exit(0);
 			return true;
 		}*/

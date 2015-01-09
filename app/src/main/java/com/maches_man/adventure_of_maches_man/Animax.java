@@ -27,7 +27,7 @@ public class Animax {
         this.pic_number=this.pic.length;
     }
 
-    public void start(){//±Ò°Ê(µL³]©wªø«×)
+    public void start(){//å•Ÿå‹•(ç„¡è¨­å®šé•·åº¦)
         animax_flag=true;
         animax_count_flag=0;
     }
@@ -35,20 +35,20 @@ public class Animax {
         animax_flag=false;
         animax_count_flag=0;
     }
-    public void pause(){//¼È°±
+    public void pause(){//æš«åœ
         pause_flag=true;
     }
-    public void resume(){//¨ú®ø¼È°±
+    public void resume(){//å–æ¶ˆæš«åœ
         pause_flag=false;
     }
-    public boolean getPause(){//¨ú±o¼È°±ª¬ºA
+    public boolean getPause(){//å–å¾—æš«åœç‹€æ…‹
         return pause_flag;
     }
     public int getCount(){
         return (int)animax_count_flag;
     }
 
-    public void drawEffect(double speed,Canvas canvas,Paint paint,int x,int y,int face_flag){//Ã¸¹Ï(µL³]©wªø«×)
+    public void drawEffect(double speed,Canvas canvas,Paint paint,int x,int y,int face_flag){//ç¹ªåœ–(ç„¡è¨­å®šé•·åº¦)
         if(animax_flag){
             if(!pause_flag){
                 animax_count_flag+=speed;

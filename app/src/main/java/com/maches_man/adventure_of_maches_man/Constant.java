@@ -4,10 +4,10 @@ public class Constant {
 static int SCREEN_WIDTH;
 static int SCREEN_HIGHT;
 
-//ª½«Ì
+//ç›´å±
 static int DEFULT_WITH=1280;
 static int DEFULT_HIGHT=720;
-//¾î«Ì
+//æ©«å±
 /*
  static int DEFULT_WITH=720;
 static int DEFULT_HIGHT=1280;

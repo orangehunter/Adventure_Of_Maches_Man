@@ -28,8 +28,11 @@ public class Player {
     float mp_max;
     float mp;
 
-    float exp_max;
-    float exp;
+    boolean damage_flag=false;
+    boolean die_flag=false;
+
+    int exp_max;
+    int exp;
 
     boolean life_flag;
     int life;
@@ -49,6 +52,8 @@ public class Player {
     final int attack_normal=1;
     final int attack_skill=2;
     final int attack_super_skill=3;
+    int damage=4;
+    int exdamage=8;
 
     int weapon_flag;
     int fist_flag;
@@ -214,7 +219,7 @@ public class Player {
         hp=hp_max;
 
         mp_max=20;
-        mp=0;
+        mp=4;
 
         exp_max=10;
         exp=0;
@@ -234,11 +239,28 @@ public class Player {
         attack_flag=attack_non;
         fist_flag=0;
         attack_normal_coolTime =10;
-        skill_mp_expend=20;
+        skill_mp_expend=4;
         superSkill_mp_expend=mp_max;
         exsword_flag=false;
 
         weapon_flag=0;
+    }
+    public void lv_up(){
+        hp_max+=5;
+        exp_max+=2;
+        mp_max+=2;
+        damage+=1;
+        exdamage+=2;
+        walk_speed+=1;
+
+        hp=hp_max;
+        if (mp>mp_max/2) {
+            mp = mp_max;
+        }else{
+            mp += mp_max/2;
+        }
+        lv++;
+        exp=0;
     }
     public  void setStop(){
         if (move_flag!=player_stop)
@@ -266,64 +288,86 @@ public class Player {
         if (this.face_flag!=face_flag)
             this.face_flag=face_flag;
     }
+    public void setDamage(){
+        if (!damaged.getFlag())
+            damaged.start();
+        if (!damage_flag)
+            damage_flag=true;
+    }
+    public boolean setDie(){
+        if (life_flag){
+            life_flag=false;
+        }
+        if (!die.getFlag())
+            die.start();
+        return die_flag;
+    }
     public void drawPlayer(Canvas canvas,Paint paint,double animax_speed){
         if (life_flag) {
-            switch (move_flag){
-                case player_stop:
-                    switch (attack_flag) {
-                        case attack_non:
-                            draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
-                            break;
-                        case attack_normal:
-                            switch (weapon_flag){
-                                case weapon_Fist:
-                                    fist_atk[fist_flag].drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-                                    break;
-                                case weapon_Gun:
-                                    draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
-                                    break;
-                                case weapon_Sword:
-                                    sword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-                                    break;
-                            }
-                            break;
-                        case attack_skill:
-                            switch (weapon_flag){
-                                case weapon_Gun:
-                                    draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
-                                    break;
-                                case weapon_Sword:
-                                    msword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-                                    break;
-                            }
-                            break;
-                        case attack_super_skill:
-                            if (exsword_flag){
-                                exsword_pre.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-                            }else{
-                                exsword_atk.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-                            }
-                            break;
-                    }
-                    break;
-                case player_walk:
-                    walk[weapon_flag].loop_flag=true;
-                    draw(canvas,walk_back[weapon_flag],x,y,0,255,paint);
-                    walk[weapon_flag].drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-                    break;
-                case player_jump:
-                    draw(canvas, jump[weapon_flag], x, y, 0, 255, paint);
-                    break;
-                case player_squat:
-                    draw(canvas, squat[weapon_flag], x, y, 0, 255, paint);
-                    break;
-                case player_rush:
-                    draw(canvas, rush, x, y, 0, 255, paint);
-                    break;
+            if (damage_flag) {
+                damaged.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
+                if (!damaged.getFlag())
+                    damage_flag=false;
+            }else{
+                switch (move_flag) {
+                    case player_stop:
+                        switch (attack_flag) {
+                            case attack_non:
+                                draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
+                                break;
+                            case attack_normal:
+                                switch (weapon_flag) {
+                                    case weapon_Fist:
+                                        fist_atk[fist_flag].drawEffect(animax_speed, canvas, paint, x, y, face_flag);
+                                        break;
+                                    case weapon_Gun:
+                                        draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
+                                        break;
+                                    case weapon_Sword:
+                                        sword_atk.drawEffect(animax_speed, canvas, paint, x, y, face_flag);
+                                        break;
+                                }
+                                break;
+                            case attack_skill:
+                                switch (weapon_flag) {
+                                    case weapon_Gun:
+                                        draw(canvas, stop[weapon_flag], x, y, 0, 255, paint);
+                                        break;
+                                    case weapon_Sword:
+                                        msword_atk.drawEffect(animax_speed, canvas, paint, x, y, face_flag);
+                                        break;
+                                }
+                                break;
+                            case attack_super_skill:
+                                if (exsword_flag) {
+                                    exsword_pre.drawEffect(animax_speed, canvas, paint, x, y, face_flag);
+                                } else {
+                                    exsword_atk.drawEffect(animax_speed, canvas, paint, x, y, face_flag);
+                                }
+                                break;
+                        }
+                        break;
+                    case player_walk:
+                        walk[weapon_flag].loop_flag = true;
+                        draw(canvas, walk_back[weapon_flag], x, y, 0, 255, paint);
+                        walk[weapon_flag].drawEffect(animax_speed, canvas, paint, x, y, face_flag);
+                        break;
+                    case player_jump:
+                        draw(canvas, jump[weapon_flag], x, y, 0, 255, paint);
+                        break;
+                    case player_squat:
+                        draw(canvas, squat[weapon_flag], x, y, 0, 255, paint);
+                        break;
+                    case player_rush:
+                        draw(canvas, rush, x, y, 0, 255, paint);
+                        break;
+                }
             }
         }else{
            die.drawEffect(animax_speed,canvas,paint,x,y,face_flag);
-            //TODO 死亡動畫完畢後
+            if (!die.getFlag()){
+                die_flag=true;
+            }
         }
     }
     public void draw(Canvas canvas,Bitmap bit,int x,int y,int rot,int alpha,Paint paint){
