@@ -152,6 +152,9 @@ implements SurfaceHolder.Callback{
 
 	public void surfaceDestroyed(SurfaceHolder arg0) {//¾P·´®É³Q©I¥s
         teach01.recycle();
+        teach02.recycle();
+        teach03.recycle();
+
         Constant.Flag=false;
 	}
 

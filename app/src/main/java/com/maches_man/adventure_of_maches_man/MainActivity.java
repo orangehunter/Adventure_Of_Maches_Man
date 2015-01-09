@@ -20,11 +20,14 @@ public class MainActivity extends Activity{
 	MainView mainview;
     TeachView teachview;
 	gameView gameview;
+    ScoreView scoreview;
 
 	Intent intent;
 	Intent deintent;
 
     int video_select;
+    int Score = 0;
+
 
 	public void changeView(int what)//切換Serface訊息發送
 	{
@@ -45,7 +48,10 @@ public class MainActivity extends Activity{
 				break;
             case 2:
                 goToTeachview();
-		
+                break;
+            case 3:
+                goToScoreview();
+                break;
 			}
 		}
 	};
@@ -76,6 +82,15 @@ public class MainActivity extends Activity{
         setContentView(teachview);
         teachview.requestFocus();//取得焦點
         teachview.setFocusableInTouchMode(true);//設為可觸控
+    }
+    private void goToScoreview() {
+        if(scoreview ==null)
+        {
+            scoreview =new ScoreView(this);
+        }
+        setContentView(scoreview);
+        scoreview.requestFocus();//取得焦點
+        scoreview.setFocusableInTouchMode(true);//設為可觸控
     }
 
 	
