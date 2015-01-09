@@ -1,11 +1,8 @@
 package com.maches_man.adventure_of_maches_man;
 
 
-
-
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,18 +14,17 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 @SuppressLint({ "ViewConstructor", "WrongCall", "ClickableViewAccessibility" })
-public class MainView extends SurfaceView
+public class TeachView extends SurfaceView
 implements SurfaceHolder.Callback{
 	//===============宣告======================
-    Bitmap back;
-    Bitmap start;
-    Bitmap gteach;
+    Bitmap teach01;
+    Bitmap teach02;
+    Bitmap teach03;
 
-    Botton startbtn;
-    Botton teachbtn;
+    Botton nextbtm;
 
+    int tflag = 0; //切換圖片用的FLAG
 
-    boolean dejump = true;
 	//========================================
 	SparseArray<PointF> mActivePointers=new SparseArray<PointF>();
 	SparseArray<Integer> btn_pointer=new SparseArray<Integer>();
@@ -37,7 +33,7 @@ implements SurfaceHolder.Callback{
 	boolean deTouchJump=true;
 	int pointerCount=0;
 
-	public MainView(MainActivity mainActivity) {
+	public TeachView(MainActivity mainActivity) {
 		super(mainActivity);
 		this.activity = mainActivity;
 		this.getHolder().addCallback(this);//設定生命周期回調接口的實現者
@@ -49,15 +45,13 @@ implements SurfaceHolder.Callback{
 		paint = new Paint();//建立畫筆
 		paint.setAntiAlias(true);//開啟抗鋸齒
 		//=============圖片載入==================
-        back=Graphic.LoadBitmap(activity.getResources(),R.drawable.title_tw,1280,720,true);
-        start = Graphic.LoadBitmap(activity.getResources(),R.drawable.startbtn,375,289,true);
-        gteach =Graphic.LoadBitmap(activity.getResources(),R.drawable.teachbtn,312,143,true);
-
-
-        startbtn = new Botton(activity,start,609,416);
-        teachbtn = new Botton(activity,gteach,993,409);
+        teach01=Graphic.LoadBitmap(activity.getResources(),R.drawable.t01,Constant.DEFULT_WITH,Constant.DEFULT_HIGHT,true);
+        teach02=Graphic.LoadBitmap(activity.getResources(),R.drawable.t02,Constant.DEFULT_WITH,Constant.DEFULT_HIGHT,true);
+        teach03=Graphic.LoadBitmap(activity.getResources(),R.drawable.t03,Constant.DEFULT_WITH,Constant.DEFULT_HIGHT,true);
 
 		//=====================================
+
+        tflag = 0;
 		Constant.Flag=true;
 		//=============螢幕刷新=================================================
 		new Thread(){
@@ -71,7 +65,7 @@ implements SurfaceHolder.Callback{
 
 						e.printStackTrace();
 					}
-					SurfaceHolder myholder=MainView.this.getHolder();
+					SurfaceHolder myholder=TeachView.this.getHolder();
 					Canvas canvas = myholder.lockCanvas();//取得畫布
 					onDraw(canvas);
 					if(canvas != null){
@@ -92,9 +86,20 @@ implements SurfaceHolder.Callback{
 			canvas.drawColor(Color.WHITE);//界面設定為白色
 			paint.setAntiAlias(true);	//開啟抗鋸齒
 			//================================畫面繪製========================================
-            Graphic.drawPic(canvas,back,1280/2,720/2,0,255,paint);
-            startbtn.drawBtm(canvas,paint);
-            teachbtn.drawBtm(canvas,paint);
+
+            if(tflag ==0) {
+                Graphic.drawPic(canvas, teach01, 1280 / 2, 720 / 2, 0, 255, paint);
+            }
+            else if(tflag == 1){
+                Graphic.drawPic(canvas, teach02, 1280 / 2, 720 / 2, 0, 255, paint);
+            }else if(tflag == 2){
+                Graphic.drawPic(canvas, teach03, 1280 / 2, 720 / 2, 0, 255, paint);
+            }
+            else if(tflag == 3){
+                activity.changeView(1);
+
+            }
+
 			//===============================================================================
 		}
 	}
@@ -112,20 +117,11 @@ implements SurfaceHolder.Callback{
 		{
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN://按下
-
 			PointF f = new PointF();
 			f.x = event.getX(pointerIndex);
 			f.y = event.getY(pointerIndex);
 			mActivePointers.put(pointerId, f);
-            if(dejump == true){    //防止彈跳
-                if(startbtn.isIn(f.x,f.y)){
-                    activity.changeView(1);
-                }
-                if(teachbtn.isIn(f.x,f.y)){
-                    activity.changeView(2);
-                }
-            }
-            dejump = false;
+
 			break;
 		case MotionEvent.ACTION_MOVE:  // a pointer was moved
 			for (int size = event.getPointerCount(), i = 0; i < size; i++) {
@@ -137,16 +133,12 @@ implements SurfaceHolder.Callback{
 			}
 			break;
 
-		case MotionEvent.ACTION_UP:    //抬起
-            if(dejump == false){
-
-            }
-            dejump = true;
+		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_POINTER_UP:
 		case MotionEvent.ACTION_CANCEL: 
 			mActivePointers.remove(pointerId);
 			btn_pointer.remove(pointerId);
-            //activity.changeView(2);
+            tflag+=1;
 			break;
 		}
 
@@ -159,7 +151,7 @@ implements SurfaceHolder.Callback{
 	}
 
 	public void surfaceDestroyed(SurfaceHolder arg0) {//銷毀時被呼叫
-        back.recycle();
+        teach01.recycle();
         Constant.Flag=false;
 	}
 

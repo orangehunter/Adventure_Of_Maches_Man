@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity{
 	int nowActivity=0;
 	MainView mainview;
+    TeachView teachview;
 	gameView gameview;
 
 	Intent intent;
@@ -42,6 +43,8 @@ public class MainActivity extends Activity{
 			case 1:
 				goToGameview();
 				break;
+            case 2:
+                goToTeachview();
 		
 			}
 		}
@@ -65,6 +68,15 @@ public class MainActivity extends Activity{
 		gameview.requestFocus();//取得焦點
 		gameview.setFocusableInTouchMode(true);//設為可觸控
 	}
+    private void goToTeachview() {
+        if(teachview ==null)
+        {
+            teachview =new TeachView(this);
+        }
+        setContentView(teachview);
+        teachview.requestFocus();//取得焦點
+        teachview.setFocusableInTouchMode(true);//設為可觸控
+    }
 
 	
 	public void callToast(int what)//Toast訊息傳送
