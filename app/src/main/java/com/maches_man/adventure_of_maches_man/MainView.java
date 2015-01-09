@@ -122,7 +122,7 @@ implements SurfaceHolder.Callback{
                     activity.changeView(1);
                 }
                 if(teachbtn.isIn(f.x,f.y)){
-                    activity.changeView(3);
+                    activity.changeView(2);
                 }
             }
             dejump = false;

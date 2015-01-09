@@ -21,9 +21,7 @@ public class ScoreView extends SurfaceView
 implements SurfaceHolder.Callback{
 	//===============«Å§i======================
     Bitmap back;
-
     Number num;
-
     int sv_score;
 
 
