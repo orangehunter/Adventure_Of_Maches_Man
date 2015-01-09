@@ -18,12 +18,16 @@ import android.widget.Toast;
 public class MainActivity extends Activity{
 	int nowActivity=0;
 	MainView mainview;
+    TeachView teachview;
 	gameView gameview;
+    ScoreView scoreview;
 
 	Intent intent;
 	Intent deintent;
 
     int video_select;
+    int Score = 0;
+
 
 	public void changeView(int what)//ち传Serface癟祇癳
 	{
@@ -42,7 +46,12 @@ public class MainActivity extends Activity{
 			case 1:
 				goToGameview();
 				break;
-		
+            case 2:
+                goToTeachview();
+                break;
+            case 3:
+                goToScoreview();
+                break;
 			}
 		}
 	};
@@ -65,6 +74,24 @@ public class MainActivity extends Activity{
 		gameview.requestFocus();//眔礘翴
 		gameview.setFocusableInTouchMode(true);//砞牟北
 	}
+    private void goToTeachview() {
+        if(teachview ==null)
+        {
+            teachview =new TeachView(this);
+        }
+        setContentView(teachview);
+        teachview.requestFocus();//眔礘翴
+        teachview.setFocusableInTouchMode(true);//砞牟北
+    }
+    private void goToScoreview() {
+        if(scoreview ==null)
+        {
+            scoreview =new ScoreView(this);
+        }
+        setContentView(scoreview);
+        scoreview.requestFocus();//眔礘翴
+        scoreview.setFocusableInTouchMode(true);//砞牟北
+    }
 
 	
 	public void callToast(int what)//Toast癟肚癳

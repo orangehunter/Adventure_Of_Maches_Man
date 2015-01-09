@@ -41,6 +41,8 @@ public class gameView extends SurfaceView
     int rush_counter=-1;
     int rush_cooler=0;
 
+    int gv_score = 0;
+
     Bitmap botton_a;
     Botton attack_L,attack_R;
     boolean attack_flag=false;
@@ -149,8 +151,10 @@ public class gameView extends SurfaceView
             Graphic.drawRect(canvas,Color.YELLOW,664,18,664+(int)(player.mp*((976-664)/player.mp_max)),59,paint);
             Graphic.drawRect(canvas,Color.BLUE,411,77,411+(int)(player.exp*((976-411)/player.exp_max)),118,paint);
 
-            num.setSize(25,29);
-            num.drawNumberLeftStart(254,97,player.lv,Number.Yellow,canvas,paint);
+            num.setSize(25,35);
+            num.drawNumberLeftStart(254,97,player.lv,Number.Blue,canvas,paint);
+            num.setSize(30,50);
+            num.drawNumberRightStart(1265,97,gv_score,Number.Yellow,canvas,paint);
 
             attack_L.drawBtm(canvas,paint);
             attack_R.drawBtm(canvas,paint);
@@ -374,6 +378,7 @@ public class gameView extends SurfaceView
     }
 
     public void surfaceDestroyed(SurfaceHolder arg0) {//¾P·´®É³Q©I¥s
+        activity.Score = gv_score;
         player.recycle();
         back.recycle();
         player_info.recycle();
