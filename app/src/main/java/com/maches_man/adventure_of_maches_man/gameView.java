@@ -18,7 +18,7 @@ import android.view.SurfaceView;
 @SuppressLint({ "ViewConstructor", "WrongCall" })
 public class gameView extends SurfaceView
         implements SurfaceHolder.Callback{
-    //===============å®£å‘Š======================
+    //===============å®???======================
     int fack_timer=0;
     int enemy_atk_counter=0;
     Number num;
@@ -69,20 +69,20 @@ public class gameView extends SurfaceView
     SparseArray<Integer> walk =new SparseArray<Integer>();
     SparseArray<rush_data> rush = new SparseArray<rush_data>();
     int pointerCount=0;
-    Paint paint;			//ç•«ç­†çš„åƒè€ƒ
+    Paint paint;			//?«ç???????
     MainActivity activity;
 
     public gameView(MainActivity mainActivity) {
         super(mainActivity);
         this.activity = mainActivity;
-        this.getHolder().addCallback(this);//è¨­å®šç”Ÿå‘½å‘¨æœŸå›èª¿æ¥å£çš„å¯¦ç¾è€…
+        this.getHolder().addCallback(this);//è¨­å????½å?¨æ????èª¿æ?¥å????å¯¦ç?¾è??
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        paint = new Paint();//å»ºç«‹ç•«ç­†
-        paint.setAntiAlias(true);//é–‹å•ŸæŠ—é‹¸é½’
-        //=============åœ–ç‰‡è¼‰å…¥==================
+        paint = new Paint();//å»ºç??«ç?
+        paint.setAntiAlias(true);//???????¸é?
+        //=============????è¼???==================
         Resources rs=activity.getResources();
         num=new Number(rs);
         player=new Player(activity);
@@ -122,7 +122,7 @@ public class gameView extends SurfaceView
         }
         //=====================================
         Constant.Flag=true;
-        //=============è¢å¹•åˆ·æ–°=================================================
+        //=============?¢å??·æ??=================================================
         new Thread(){
             @SuppressLint("WrongCall")
             public void run()
@@ -135,7 +135,7 @@ public class gameView extends SurfaceView
                         e.printStackTrace();
                     }
                     SurfaceHolder myholder= gameView.this.getHolder();
-                    Canvas canvas = myholder.lockCanvas();//å–å¾—ç•«å¸ƒ
+                    Canvas canvas = myholder.lockCanvas();//??å¾??«å?
                     onDraw(canvas);
                     if(canvas != null){
                         myholder.unlockCanvasAndPost(canvas);
@@ -148,12 +148,12 @@ public class gameView extends SurfaceView
     }
     @SuppressLint("DrawAllocation")
     @Override
-    protected void onDraw(Canvas canvas) {//é‡æ–°å®šç¾©çš„ç¹ªåˆ¶æ–¹æ³•
+    protected void onDraw(Canvas canvas) {//???°å?ç¾©ç??ç¹ªå?¶æ?¹æ?
         if(canvas!=null){
             super.onDraw(canvas);
-            canvas.clipRect(new Rect(0,0,Constant.SCREEN_WIDTH,Constant.SCREEN_HIGHT));//åªåœ¨è¢å¹•ç¯„åœå…§ç¹ªåˆ¶åœ–ç‰‡
-            canvas.drawColor(Color.WHITE);//ç•Œé¢è¨­å®šç‚ºç™½è‰²
-            paint.setAntiAlias(true);	//é–‹å•ŸæŠ—é‹¸é½’
+            canvas.clipRect(new Rect(0,0,Constant.SCREEN_WIDTH,Constant.SCREEN_HIGHT));//?ªå?¨è?¢å?ç¯????§ç¹ª?¶å????
+            canvas.drawColor(Color.WHITE);//???¢è¨­å®??ºç?½è??
+            paint.setAntiAlias(true);	//???????¸é?
             Graphic.drawPic(canvas,back,(int)(back_x+1280/2),(int)(back_y+720/2),0,255,paint);
             fack_timer++;
             enemy_atk_counter++;
@@ -218,6 +218,7 @@ public class gameView extends SurfaceView
                                         enemy[j].hp-=player.damage;
                                         enemy[j].setDamage();
                                         tama[i].stop();
+                                        gv_score+=100;
                                         break;
                                     }
                                 }
@@ -230,6 +231,7 @@ public class gameView extends SurfaceView
                                         enemy[j].hp-=player.exdamage;
                                         enemy[j].setDamage();
                                         tama[i].stop();
+                                        gv_score+=200;
                                         break;
                                     }
                                 }
@@ -484,7 +486,7 @@ public class gameView extends SurfaceView
         }
     }
     @Override
-    public boolean onTouchEvent(MotionEvent event){//è§¸æ§äº‹ä»¶
+    public boolean onTouchEvent(MotionEvent event){//è§¸æ?§ä?ä»?
         pointerCount = event.getPointerCount();
 
         // get pointer index from the event object
@@ -496,7 +498,7 @@ public class gameView extends SurfaceView
         switch(event.getActionMasked())
         {
             case MotionEvent.ACTION_DOWN:
-            case MotionEvent.ACTION_POINTER_DOWN://æŒ‰ä¸‹
+            case MotionEvent.ACTION_POINTER_DOWN://??ä¸?
                 point down = new point();
                 down.x = event.getX(pointerIndex);
                 down.y = event.getY(pointerIndex);
@@ -612,7 +614,7 @@ public class gameView extends SurfaceView
 
     }
 
-    public void surfaceDestroyed(SurfaceHolder arg0) {//éŠ·æ¯€æ™‚è¢«å‘¼å«
+    public void surfaceDestroyed(SurfaceHolder arg0) {//?·æ???è¢«å?¼å??
         activity.Score = gv_score;
         player.recycle();
         back.recycle();
